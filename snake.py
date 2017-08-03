@@ -1,7 +1,25 @@
 import turtle
 import random
 
+turtle.bgcolor("black")
+turtleturtle = turtle.clone()
+turtleturtle.ht()
+turtleturtle.pensize(10)
+turtleturtle.color("red")
+turtleturtle.penup()
+turtleturtle.goto(400,250)
+turtleturtle.pendown()
+turtleturtle.goto(-400,250)
+turtleturtle.goto(-400,-250)
+turtleturtle.goto(400,-250)
+turtleturtle.goto(400,250)
+turtleturtle.penup()
+turtleturtle.goto(0,0)
+turtleturtle.pendown()
+
 turtle.tracer(1,0)
+
+
 
 SIZE_X=800
 SIZE_Y=500
@@ -11,20 +29,28 @@ turtle.penup()
 
 SQUARE_SIZE = 20
 START_LENGTH = 3
-
+score = 0 
 pos_list = []
 stamp_list = []
 food_pos = []
 food_stamps = []
+inices = -1
+turtlecolor = ["blue","green","yellow","purple","red","gray","pink","dark blue"]
+
+scoreturtle = turtle.clone()
+scoreturtle.pencolor("white")
+scoreturtle.ht()
 
 snake = turtle.clone()
 snake.shape("square")
-snake.fillcolor("green")
-
+snake.fillcolor("blue")
+#making food turtle
 food = turtle.clone()
+food.color("pink")
 food.shape("circle")
 
 turtle.hideturtle()
+
 
 for i in range(START_LENGTH):
     x_pos = snake.pos()[0]
@@ -88,8 +114,8 @@ turtle.listen()
 def make_food():
     min_x = -int(SIZE_X/2/SQUARE_SIZE) + 1
     max_x = int(SIZE_X/2/SQUARE_SIZE)-1
-    min_y = -int(SIZE_Y/2/SQUARE_SIZE) - 1
-    max_y = int(SIZE_Y/2/SQUARE_SIZE) + 1
+    min_y = -int(SIZE_Y/2/SQUARE_SIZE) + 1
+    max_y = int(SIZE_Y/2/SQUARE_SIZE) - 1
 
     food_x = random.randint(min_x,max_x) * SQUARE_SIZE
     food_y = random.randint(min_y,max_y) * SQUARE_SIZE
@@ -148,7 +174,7 @@ def move_snake():
         quit()
         
 #special place
-    global food_stamps, food_pos
+    global food_stamps, food_pos, score,turtlecolor, indices
     # snake is eating food
     if snake.pos() in food_pos:
         food_ind = food_pos.index(snake.pos())
@@ -156,21 +182,25 @@ def move_snake():
         food_pos.pop(food_ind)
         food_stamps.pop(food_ind)
         print("You have eaten the food!")
+        score = score + 1
+        scoreturtle.clear()
+        scoreturtle.write(score, font = ("Ariel", 15))
+        indices = random.randint(0,(len(turtlecolor))-1)
+        snake.fillcolor(turtlecolor[indices])
+        
         make_food()
     else:
         old_stamp = stamp_list.pop(0)
         snake.clearstamp(old_stamp)
         pos_list.pop(0)
             
-        
-        
-
     if snake.pos() in pos_list[0:-2]:
         quit()
     turtle.ontimer(move_snake, TIME_STEP)
 
 make_food()
 move_snake()
+
 ##turtle.register_shape("circle")
 
 ##food_pos = [(100,100),]
@@ -194,6 +224,7 @@ move_snake()
 ##food.goto(food_pos[3])
 ##food_stamp = food.stamp()
 ##food_stamps.append(food_stamp)
+
 
 
 
